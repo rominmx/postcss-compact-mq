@@ -1,0 +1,11 @@
+@media >1024px {
+	.header {
+		color: red;
+	}
+}
+
+@media <=1024, >768 {
+	.header {
+		color: blue;
+	}
+}

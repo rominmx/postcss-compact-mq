@@ -1,0 +1,11 @@
+@media screen and (min-width: 1025px) {
+	.header {
+		color: red;
+	}
+}
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+	.header {
+		color: blue;
+	}
+}
