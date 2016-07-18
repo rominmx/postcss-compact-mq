@@ -3,6 +3,11 @@
 ## Description
 This plugin provides compact, intuitive syntax for most common media queries based on maximum and minimum viewport width.
 
+## Installation
+```ssh
+$ npm install postcss-compact-mq
+```
+
 ## Usage
 ```javascript
 postcss([ require('postcss-compact-mq') ])
