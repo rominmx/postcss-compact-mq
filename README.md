@@ -39,7 +39,6 @@ You can create an at-rule with aliases for breakpoints, for example:
 	tablet: 768;
 }
 ```
-
 ```css
 @media <=desktop, >tablet {...}
 ```
@@ -56,7 +55,8 @@ Just place aliases for your mediaqueries in a separate at-rule and use them late
 @media-queries {
 	tablet: <=desktop, >phone;
 }
-
+```
+```css
 @media tablet {...}
 ```
 
