@@ -1,4 +1,5 @@
 # postcss-compact-mq
+[![Build Status](https://travis-ci.org/rominmx/postcss-compact-mq.svg?branch=master)](https://travis-ci.org/rominmx/postcss-compact-mq)
 ## Description
 This plugin provides compact, intuitive syntax for most common media queries based on maximum and minimum viewport width.
 
