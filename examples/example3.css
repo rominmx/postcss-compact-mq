@@ -1,0 +1,14 @@
+@breakpoints {
+	desktop: 1024px;
+	tablet: 768;
+}
+
+@media-queries {
+	tablet: <=desktop, >tablet;
+}
+
+@media tablet {
+	.header {
+		color: red;
+	}
+}

@@ -1,9 +1,9 @@
 # postcss-compact-mq
 ## Description
-This plugin provides compact, intuitive syntax for the most common mediaqueries based on maximum and minimum viewport width.
+This plugin provides compact, intuitive syntax for most common media queries based on maximum and minimum viewport width.
 
 ## Usage
-```
+```javascript
 postcss([ require('postcss-compact-mq') ])
 ```
 ### Common case
@@ -44,7 +44,7 @@ You can create an at-rule with aliases for breakpoints, for example:
 ```
 
 ### Aliases
-Just place aliases for your mediaqueries in a separate at-rule and use them later:
+Just place aliases for your media queries in a separate at-rule and use them later:
 
 ```css
 @breakpoints {

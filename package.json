@@ -1,7 +1,14 @@
 {
   "name": "postcss-compact-mq",
-  "version": "0.0.5",
+  "version": "0.0.9",
   "description": "'Post CSS plugin providing compact media queries syntax'",
+  "keywords": [
+    "postcss",
+    "css",
+    "postcss-plugin",
+    "media",
+    "queries"
+  ],
   "main": "index.js",
   "dependencies": {
     "postcss": "^5.1.0"
@@ -10,16 +17,17 @@
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-mocha": "^2.2.0",
-    "gulp-postcss": "^6.1.1"
+    "gulp-postcss": "^6.1.1",
+    "mocha": "^2.5.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rominmx/postcss-compact-mq.git"
+    "url": "https://github.com/rominmx/postcss-compact-mq.git"
   },
-  "author": "rominmx",
+  "author": "Maxim Romin",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rominmx/postcss-compact-mq/issues"
