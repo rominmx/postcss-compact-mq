@@ -1,6 +1,27 @@
 var assert = require('chai').assert,
+	postcss = require('postcss'),
+	fs = require('fs'),
+	path = require('path'),
+	plugin = require('../'),
 	MQValue = require('../lib/mediaqueries').MQValue,
 	parseMQ = require('../lib/mediaqueries').parseMQ;
+
+var test = function(fixture, opts, done) {
+	var input = fixture + '.css',
+		expected = fixture + '.expected.css';
+
+	input = fs.readFileSync(path.join(__dirname, 'fixtures', input), 'utf8');
+	expected = fs.readFileSync(path.join(__dirname, 'fixtures', expected), 'utf8');	
+
+	postcss([ plugin(opts) ])
+		.process(input)
+		.then(function(result) {
+			assert.equal(result.css, expected);
+			done();
+		}).catch(function(error) {
+			done(error);
+		});
+}
 
 describe('mediaqueries lib', function() {
 	var mediaqueries = [
@@ -34,4 +55,18 @@ describe('mediaqueries lib', function() {
 			assert.equal(mq.toString(), mediaquery.expected);
 		});
 	});
+});
+
+describe('postcss-compact-mq', function() {
+	it('common usage', function(done) {
+		test('common', {}, done);
+	});
+
+	it('breakpoints at-rule', function(done) {
+		test('breakpoints', {}, done);
+	});
+
+	it('alias at-rule', function(done) {
+		test('alias', {}, done);
+	})
 });

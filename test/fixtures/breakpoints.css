@@ -1,0 +1,10 @@
+@breakpoints {
+	tablet: 768;
+	phone: 480px;
+}
+
+@media <=tablet, >phone {
+	.header {
+		color: red;
+	}
+}

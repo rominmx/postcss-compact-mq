@@ -1,0 +1,14 @@
+@breakpoints {
+	tablet: 768;
+	phone: 480px;
+}
+
+@media-queries {
+	phone-huge: <=tablet, >phone;
+}
+
+@media phone-huge {
+	.header {
+		color: red;
+	}
+}

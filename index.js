@@ -54,12 +54,12 @@ module.exports = postcss.plugin('postcss-alias-list', opts => {
                         breakpoint, 
                         mq, 
                         bpAliasIndex,
-                        tmp;
+                        str;
 
+                    str = param;
                     sign = parseMQ(param, 'sign');
                     breakpoint = parseMQ(param, 'breakpoint');
                     bpAliasIndex = -1;
-                    tmp = param;
 
                     // string contains property from breakpoints at-rule
                     breakpoints.some((element, i) => {
@@ -69,11 +69,11 @@ module.exports = postcss.plugin('postcss-alias-list', opts => {
                     });
 
                     if (bpAliasIndex != -1) {
-                        tmp = breakpoints[bpAliasIndex].value;
+                        str = breakpoints[bpAliasIndex].value;
                     }
 
-                    value = parseMQ(tmp, 'value');
-                    units = parseMQ(tmp, 'units');
+                    value = parseMQ(str, 'value');
+                    units = parseMQ(str, 'units');
 
                     mq = new MQValue(sign, value, units);
                     parsedValues.push(mq.toString());

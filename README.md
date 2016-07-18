@@ -31,7 +31,7 @@ You can omit units: the plugin automatically converts unitless values into pixel
 @media <=1024, >768 {...}
 ```
 ### Breakpoints
-You can create an at-rule with aliases for breakpoints, for example:
+You can create at-rule with aliases for breakpoints, for example:
 
 ```css
 @breakpoints {
@@ -44,7 +44,7 @@ You can create an at-rule with aliases for breakpoints, for example:
 ```
 
 ### Aliases
-Just place aliases for your media queries in a separate at-rule and use them later:
+Just place aliases for your media queries in separate at-rule and use them later:
 
 ```css
 @breakpoints {
