@@ -1,55 +1,6 @@
-var postcss = require('postcss');
-
-var MQValue = function(sign, value, units) {
-    this.sign = sign;
-    this.value = value;
-    this.units = units || 'px';
-}
-
-MQValue.prototype.toString = function() {
-    var sign;
-    var value = this.value;
-
-    switch (this.sign) {
-        case '<':
-            value--;
-        case '<=':
-            sign = 'max-width';
-            break;  
-        case '>':
-            value++;
-        case '>=':
-            sign = 'min-width';
-            break;
-        default:
-            break;  
-    }
-
-    return '(' + sign + ': ' + value + this.units + ')';
-}
-
-var parseMQ = function(str, param) {
-    var result;
-
-    switch (param) {
-        case 'sign':
-            result = str.match(/^[<=>]+/)[0];
-            break;
-        case 'value':
-            result = +str.match(/[\d]+/)[0];
-            break;
-        case 'units':
-            result = str.match(/[\D]*$/)[0] || 'px';
-            break;
-        case 'breakpoint':
-            result = str.replace(/^[<=>]+/, '');
-            break;
-        default:
-            break;  
-    }
-
-    return result;
-}
+var postcss = require('postcss'),
+    MQValue = require('./lib/mediaqueries').MQValue,
+    parseMQ = require('./lib/mediaqueries').parseMQ;
 
 module.exports = postcss.plugin('postcss-alias-list', opts => {
     var text = opts && opts.text || 'no text';
@@ -82,8 +33,6 @@ module.exports = postcss.plugin('postcss-alias-list', opts => {
 
             atRule.remove();
         });
-
-        console.log(mediaqueries);
 
         css.walkAtRules('media', atRule => {
             var parsedValues = [];
@@ -125,7 +74,6 @@ module.exports = postcss.plugin('postcss-alias-list', opts => {
                     parsedValues.push(mq.toString());
                 });
 
-                console.log(parsedValues.join(' and '));
                 atRule.params = 'screen and ' + parsedValues.join(' and ');
             }
 
