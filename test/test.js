@@ -1,4 +1,4 @@
-var assert = require('chai').assert,
+var expect = require('chai').expect,
 	postcss = require('postcss'),
 	fs = require('fs'),
 	path = require('path'),
@@ -16,57 +16,75 @@ var test = function(fixture, opts, done) {
 	postcss([ plugin(opts) ])
 		.process(input)
 		.then(function(result) {
-			assert.equal(result.css, expected);
+			expect(result.css).to.equal(expected);
 			done();
 		}).catch(function(error) {
 			done(error);
 		});
 }
 
-describe('mediaqueries lib', function() {
-	var mediaqueries = [
-		{
-			input: '<=1920px',
-			components: { sign: '<=', value: 1920, units: 'px' },
-			expected: '(max-width: 1920px)'
-		},
-		{
-			input: '>480',
-			components: { sign: '>', value: 480, units: 'px' },
-			expected: '(min-width: 481px)'
-		}
-	];
-
-	it('parses string', function() {
-		mediaqueries.forEach(function(mediaquery) {
-			for (var c in mediaquery.components) {
-				assert.equal(parseMQ(mediaquery.input, c), mediaquery.components[c]);
-			}
-		});
-	});
-
-	it('creates media query string', function() {
-		mediaqueries.forEach(function(mediaquery) {
-			var mq, sign, value, units;
-			sign = parseMQ(mediaquery.input, 'sign');
-			value = parseMQ(mediaquery.input, 'value');
-			units = parseMQ(mediaquery.input, 'units');
-			mq = new MQValue(sign, value, units);
-			assert.equal(mq.toString(), mediaquery.expected);
-		});
-	});
-});
-
 describe('postcss-compact-mq', function() {
-	it('common usage', function(done) {
-		test('common', {}, done);
+	
+	describe('mediaqueries lib', function() {
+		var mediaqueries = [
+			{
+				input: '<=1920px',
+				components: { sign: '<=', value: 1920, units: 'px' },
+				expected: '(max-width: 1920px)'
+			},
+			{
+				input: '>480',
+				components: { sign: '>', value: 480, units: 'px' },
+				expected: '(min-width: 481px)'
+			}
+		];
+
+		describe('string parsing', function() {
+			it('reads unitless values', function() {
+				mediaqueries.forEach(function(mediaquery) {
+					var units = parseMQ(mediaquery.input, 'units');
+
+					expect(units).to.equal('px');
+				});
+			});
+
+			it('creates predictable media query components', function() {
+				mediaqueries.forEach(function(mediaquery) {
+					var component;
+
+					for (var c in mediaquery.components) {
+						component = parseMQ(mediaquery.input, c);
+
+						expect(component).to.equal(mediaquery.components[c]);
+					}
+				});
+			});			
+		});
+
+		it('creates media query string', function() {
+			mediaqueries.forEach(function(mediaquery) {
+				var mq, sign, value, units;
+				sign = parseMQ(mediaquery.input, 'sign');
+				value = parseMQ(mediaquery.input, 'value');
+				units = parseMQ(mediaquery.input, 'units');
+				mq = new MQValue(sign, value, units);
+				
+				expect(mq.toString()).to.equal(mediaquery.expected);
+			});
+		});
 	});
 
-	it('breakpoints at-rule', function(done) {
-		test('breakpoints', {}, done);
-	});
+	describe('plugin', function() {
+		it('common usage', function(done) {
+			test('common', {}, done);
+		});
 
-	it('alias at-rule', function(done) {
-		test('alias', {}, done);
-	})
+		it('breakpoints at-rule', function(done) {
+			test('breakpoints', {}, done);
+		});
+
+		it('alias at-rule', function(done) {
+			test('alias', {}, done);
+		})
+	});
 });
