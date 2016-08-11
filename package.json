@@ -1,9 +1,10 @@
 {
   "name": "postcss-compact-mq",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "'Post CSS plugin providing compact media queries syntax'",
   "keywords": [
     "postcss",
+    "plugin",
     "css",
     "postcss-plugin",
     "media",

@@ -50,7 +50,6 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
                 });
                 atRule.params = parseMediaQueries(params, defaultType);
             }
-
         });
     }
 });
