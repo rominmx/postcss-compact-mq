@@ -3,10 +3,10 @@ var expect = require('chai').expect,
 	fs = require('fs'),
 	path = require('path'),
 	plugin = require('../'),
-	MQValue = require('../lib/mediaqueries').MQValue,
-	parseMQ = require('../lib/mediaqueries').parseMQ,
 	MediaFeature = require('../lib/mediaqueries').MediaFeature,
-	parseMediaFeature = require('../lib/mediaqueries').parseMediaFeature;
+	parseMediaFeature = require('../lib/mediaqueries').parseMediaFeature,
+	MediaQuery = require('../lib/mediaqueries').MediaQuery,
+	parseMediaQuery = require('../lib/mediaqueries').parseMediaQuery;
 
 var test = function(fixture, opts, done) {
 	var input = fixture + '.css',
@@ -28,25 +28,26 @@ var test = function(fixture, opts, done) {
 describe('postcss-compact-mq', function() {
 	
 	describe('mediaqueries lib', function() {
-		var mediafeatures = [
-			{
-				input: '<=1920',
-				parsed: { name: 'max-width', value: '1920px' },
-				expected: '(max-width: 1920px)'
-			},
-			{
-				input: 'h>768',
-				parsed: { name: 'min-height', value: '769px' },
-				expected: '(min-height: 769px)'
-			},
-			{
-				input: 'w<1024',
-				parsed: { name: 'max-width', value: '1023px' },
-				expected: '(max-width: 1023px)'
-			}
-		];
 
 		describe('media features processing', function() {
+			var mediafeatures = [
+				{
+					input: '<=1920',
+					parsed: { name: 'max-width', value: '1920px' },
+					expected: '(max-width: 1920px)'
+				},
+				{
+					input: 'h>768',
+					parsed: { name: 'min-height', value: '769px' },
+					expected: '(min-height: 769px)'
+				},
+				{
+					input: 'w<1024',
+					parsed: { name: 'max-width', value: '1023px' },
+					expected: '(max-width: 1023px)'
+				}
+			];
+
 			it('correctly processes uniless values', function() {
 				mediafeatures.forEach(function(mediafeature) {
 					var value = parseMediaFeature(mediafeature.input).value;
@@ -69,37 +70,56 @@ describe('postcss-compact-mq', function() {
 			});
 		});
 
-		//describe('features parsing', function() {
-		//	it('reads unitless values', function() {
-		//		mediaqueries.forEach(function(mediaquery) {
-		//			var units = parseMQ(mediaquery.input, 'units');
-		//			expect(units).to.equal('px');
-		//		});
-		//	});
-        //
-		//	it('creates predictable media query components', function() {
-		//		mediaqueries.forEach(function(mediaquery) {
-		//			var component;
-        //
-		//			for (var c in mediaquery.components) {
-		//				component = parseMQ(mediaquery.input, c);
-		//				expect(component).to.equal(mediaquery.components[c]);
-		//			}
-		//		});
-		//	});
-		//});
-        //
-		//it('creates media query string', function() {
-		//	mediaqueries.forEach(function(mediaquery) {
-		//		var mq, sign, value, units;
-		//		sign = parseMQ(mediaquery.input, 'sign');
-		//		value = parseMQ(mediaquery.input, 'value');
-		//		units = parseMQ(mediaquery.input, 'units');
-		//		mq = new MQValue(sign, value, units);
-		//
-		//		expect(mq.toString()).to.equal(mediaquery.expected);
-		//	});
-		//});
+		describe('media queries processing', function() {
+			var defaultType = 'screen';
+			var mediaqueries = [
+				{
+					input: '>480',
+					parsed: { type: 'screen', features: [
+						{
+							name: 'min-width',
+							value: '481px'
+						}
+					] },
+					expected: 'screen and (min-width: 481px)'
+				},
+				{
+					input: 'all h<=1024 >768',
+					parsed: { type: 'all', features: [
+						{
+							name: 'max-height',
+							value: '1024px'
+						},
+						{
+							name: 'min-width',
+							value: '769px'
+						}
+					] },
+					expected: 'all and (max-height: 1024px) and (min-width: 769px)'
+				},
+				{
+					input: 'print',
+					parsed: { type: 'print', features: [] },
+					expected: 'print'
+				}
+			];
+
+			it('reads media type', function() {
+				mediaqueries.forEach(function(mediaquery) {
+					var type = parseMediaQuery(mediaquery.input, defaultType).type;
+					expect(type).to.equal(mediaquery.parsed.type);
+				});
+			});
+
+			it('correcty parses media query', function() {
+				mediaqueries.forEach(function(mediaquery) {
+					var str = parseMediaQuery(mediaquery.input, defaultType).toString();
+					expect(str).to.equal(mediaquery.expected);
+				});
+			});
+		});
+
+
 	});
 
 	describe('plugin', function() {
