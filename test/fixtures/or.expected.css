@@ -1,5 +1,10 @@
-@media all and (max-width: 1024px) and (min-width: 769px), handheld and (max-width: 479px) {
+@media all and (max-height: 1024px) and (min-width: 769px), handheld and (max-width: 479px) {
     .header {
         color: red;
+    }
+}
+@media print and (min-width: 1001px), all and (max-width: 768px) and (min-height: 481px), screen {
+    .footer {
+        color: rebeccapurple;
     }
 }

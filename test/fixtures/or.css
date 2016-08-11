@@ -1,5 +1,17 @@
-@media <=1024px >768, handheld <480 {
+@breakpoints {
+    tablet: 768;
+    phone: 480px;
+}
+@media-queries {
+    phone-huge: print >1000, <=tablet h>phone, screen;
+}
+@media h<=1024px >768, handheld <480 {
     .header {
         color: red;
+    }
+}
+@media phone-huge {
+    .footer {
+        color: rebeccapurple;
     }
 }
