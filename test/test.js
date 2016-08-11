@@ -28,50 +28,78 @@ var test = function(fixture, opts, done) {
 describe('postcss-compact-mq', function() {
 	
 	describe('mediaqueries lib', function() {
-		var mediaqueries = [
+		var mediafeatures = [
 			{
-				input: '<=1920px',
-				components: { sign: '<=', value: 1920, units: 'px' },
+				input: '<=1920',
+				parsed: { name: 'max-width', value: '1920px' },
 				expected: '(max-width: 1920px)'
 			},
 			{
-				input: '>480',
-				components: { sign: '>', value: 480, units: 'px' },
-				expected: '(min-width: 481px)'
+				input: 'h>768',
+				parsed: { name: 'min-height', value: '769px' },
+				expected: '(min-height: 769px)'
+			},
+			{
+				input: 'w<1024',
+				parsed: { name: 'max-width', value: '1023px' },
+				expected: '(max-width: 1023px)'
 			}
 		];
 
-		describe('string parsing', function() {
-			it('reads unitless values', function() {
-				mediaqueries.forEach(function(mediaquery) {
-					var units = parseMQ(mediaquery.input, 'units');
-					expect(units).to.equal('px');
+		describe('media features processing', function() {
+			it('correctly processes uniless values', function() {
+				mediafeatures.forEach(function(mediafeature) {
+					var value = parseMediaFeature(mediafeature.input).value;
+					expect(value).to.equal(mediafeature.parsed.value);
 				});
 			});
 
-			it('creates predictable media query components', function() {
-				mediaqueries.forEach(function(mediaquery) {
-					var component;
-
-					for (var c in mediaquery.components) {
-						component = parseMQ(mediaquery.input, c);
-						expect(component).to.equal(mediaquery.components[c]);
-					}
+			it('processes height and width (also if omited)', function() {
+				mediafeatures.forEach(function(mediafeature) {
+					var name = parseMediaFeature(mediafeature.input).name;
+					expect(name).to.equal(mediafeature.parsed.name);
 				});
-			});			
-		});
+			});
 
-		it('creates media query string', function() {
-			mediaqueries.forEach(function(mediaquery) {
-				var mq, sign, value, units;
-				sign = parseMQ(mediaquery.input, 'sign');
-				value = parseMQ(mediaquery.input, 'value');
-				units = parseMQ(mediaquery.input, 'units');
-				mq = new MQValue(sign, value, units);
-				
-				expect(mq.toString()).to.equal(mediaquery.expected);
+			it('converts media features to strings', function() {
+				mediafeatures.forEach(function(mediafeature) {
+					var str = parseMediaFeature(mediafeature.input).toString();
+					expect(str).to.equal(mediafeature.expected);
+				});
 			});
 		});
+
+		//describe('features parsing', function() {
+		//	it('reads unitless values', function() {
+		//		mediaqueries.forEach(function(mediaquery) {
+		//			var units = parseMQ(mediaquery.input, 'units');
+		//			expect(units).to.equal('px');
+		//		});
+		//	});
+        //
+		//	it('creates predictable media query components', function() {
+		//		mediaqueries.forEach(function(mediaquery) {
+		//			var component;
+        //
+		//			for (var c in mediaquery.components) {
+		//				component = parseMQ(mediaquery.input, c);
+		//				expect(component).to.equal(mediaquery.components[c]);
+		//			}
+		//		});
+		//	});
+		//});
+        //
+		//it('creates media query string', function() {
+		//	mediaqueries.forEach(function(mediaquery) {
+		//		var mq, sign, value, units;
+		//		sign = parseMQ(mediaquery.input, 'sign');
+		//		value = parseMQ(mediaquery.input, 'value');
+		//		units = parseMQ(mediaquery.input, 'units');
+		//		mq = new MQValue(sign, value, units);
+		//
+		//		expect(mq.toString()).to.equal(mediaquery.expected);
+		//	});
+		//});
 	});
 
 	describe('plugin', function() {
