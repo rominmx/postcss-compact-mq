@@ -124,7 +124,7 @@ describe('postcss-compact-mq', function() {
 
 	describe('plugin', function() {
 		it('common usage', function(done) {
-			test('common', {}, done);
+			test('common', { type: 'all' }, done);
 		});
 
 		it('breakpoints at-rule', function(done) {

@@ -3,7 +3,7 @@
 	phone: 480px;
 }
 
-@media <=tablet, >phone {
+@media w<=tablet h>phone {
 	.header {
 		color: red;
 	}

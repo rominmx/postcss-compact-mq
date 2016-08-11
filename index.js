@@ -1,9 +1,8 @@
 var postcss = require('postcss'),
-    MQValue = require('./lib/mediaqueries').MQValue,
-    parseMQ = require('./lib/mediaqueries').parseMQ;
+    parseMediaQuery = require('./lib/mediaqueries').parseMediaQuery;
 
 module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
-    var text = opts && opts.text || 'no text';
+    var defaultType = opts && opts.type || 'screen';
 
     return function(css) {
         var breakpoints, mediaqueries;
@@ -21,7 +20,7 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
             atRule.remove();
         });
 
-        // parse and clean mediaqueries at-rules
+        // parse and clean media query at-rules
         mediaqueries = [];
         css.walkAtRules('media-queries', function(atRule) {
             atRule.walkDecls(function(decl) {
@@ -35,10 +34,10 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
         });
 
         css.walkAtRules('media', function(atRule) {
-            var parsedValues = [];
             var params = atRule.params;
 
-            // search and remove mediaquery aliases
+            // search and remove media query aliases
+            // TODO: merge media queries
             mediaqueries.some(function(mq) {
                 if (mq.prop == atRule.params) {
                     params = mq.value;
@@ -47,39 +46,11 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
             
             // at-rule contains <, >, =
             if (params.search(/[<=>]/) != -1) {
-                postcss.list.comma(params).forEach(function(param) {
-                    var sign, 
-                        value, 
-                        units, 
-                        breakpoint, 
-                        mq, 
-                        bpAliasIndex,
-                        str;
-
-                    str = param;
-                    sign = parseMQ(param, 'sign');
-                    breakpoint = parseMQ(param, 'breakpoint');
-                    bpAliasIndex = -1;
-
-                    // string contains property from breakpoints at-rule
-                    breakpoints.some(function(element, i) {
-                        if (element.prop == breakpoint) {
-                            bpAliasIndex = i;
-                        }
-                    });
-
-                    if (bpAliasIndex != -1) {
-                        str = breakpoints[bpAliasIndex].value;
-                    }
-
-                    value = parseMQ(str, 'value');
-                    units = parseMQ(str, 'units');
-
-                    mq = new MQValue(sign, value, units);
-                    parsedValues.push(mq.toString());
+                breakpoints.forEach(function(breakpoint) {
+                    var pattern = new RegExp('([<=>])' + breakpoint.prop + '\\b');
+                    params = params.replace(pattern, '$1' + breakpoint.value);
                 });
-
-                atRule.params = 'screen and ' + parsedValues.join(' and ');
+                atRule.params = parseMediaQuery(params, defaultType).toString();
             }
 
         });

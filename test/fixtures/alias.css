@@ -4,7 +4,7 @@
 }
 
 @media-queries {
-	phone-huge: <=tablet, >phone;
+	phone-huge: <=tablet h>phone;
 }
 
 @media phone-huge {
