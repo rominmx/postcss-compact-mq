@@ -1,11 +1,12 @@
 var postcss = require('postcss'),
-    parseMediaQuery = require('./lib/mediaqueries').parseMediaQuery;
+    parseMediaQueries = require('./lib/mediaqueries').parseMediaQueries;
 
 module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
     var defaultType = opts && opts.type || 'screen';
 
     return function(css) {
-        var breakpoints, mediaqueries;
+        var breakpoints,   // breakpoints aliases
+            mediaqueries;  // media query aliases
 
         // parse and clean breakpoints at-rules
         breakpoints = [];
@@ -16,7 +17,6 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
                     value: decl.value
                 });
             });
-
             atRule.remove();
         });
 
@@ -29,34 +29,26 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
                     value: decl.value
                 });
             });
-
             atRule.remove();
         });
 
         css.walkAtRules('media', function(atRule) {
             var params = atRule.params;
-            var mqComponents;
 
             // search and remove media query aliases
             // TODO: merge media queries
-            mediaqueries.some(function(mq) {
-                if (mq.prop == atRule.params) {
-                    params = mq.value;
-                }
+            mediaqueries.forEach(function(mediaquery) {
+                var pattern = new RegExp('\\b' + mediaquery.prop + '\\b');
+                params = params.replace(pattern, mediaquery.value);
             });
             
             // at-rule contains <, >, =
             if (params.search(/[<=>]/) != -1) {
                 breakpoints.forEach(function(breakpoint) {
-                    var pattern = new RegExp('([<=>])' + breakpoint.prop + '\\b');
+                    var pattern = new RegExp('([<=>])' + breakpoint.prop + '\\b', 'g');
                     params = params.replace(pattern, '$1' + breakpoint.value);
                 });
-
-                mqComponents = postcss.list.comma(params).map(function(component) {
-                    return parseMediaQuery(component, defaultType).toString();
-                });
-
-                atRule.params = mqComponents.join(', ');
+                atRule.params = parseMediaQueries(params, defaultType);
             }
 
         });

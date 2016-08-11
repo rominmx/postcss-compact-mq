@@ -4,11 +4,21 @@
 }
 
 @media-queries {
-	phone-huge: <=tablet h>phone;
+	phone-huge: all <=tablet h>phone;
+	desktop: >tablet;
 }
-
+@media desktop {
+	.header {
+		color: rebeccapurple;
+	}
+}
 @media phone-huge {
 	.header {
 		color: red;
+	}
+}
+@media all desktop {
+	.header {
+		color: green;
 	}
 }

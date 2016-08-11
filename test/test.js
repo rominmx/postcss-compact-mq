@@ -3,10 +3,9 @@ var expect = require('chai').expect,
 	fs = require('fs'),
 	path = require('path'),
 	plugin = require('../'),
-	MediaFeature = require('../lib/mediaqueries').MediaFeature,
 	parseMediaFeature = require('../lib/mediaqueries').parseMediaFeature,
-	MediaQuery = require('../lib/mediaqueries').MediaQuery,
-	parseMediaQuery = require('../lib/mediaqueries').parseMediaQuery;
+	parseMediaQuery = require('../lib/mediaqueries').parseMediaQuery,
+	parseMediaQueries = require('../lib/mediaqueries').parseMediaQueries;
 
 var test = function(fixture, opts, done) {
 	var input = fixture + '.css',
@@ -137,6 +136,10 @@ describe('postcss-compact-mq', function() {
 
 		it('or operator', function(done) {
 			test('or', { type: 'all' }, done);
+		});
+
+		it('merges media queries', function(done) {
+			test('merge', {}, done);
 		})
 	});
 });

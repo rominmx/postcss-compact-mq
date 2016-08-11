@@ -1,0 +1,12 @@
+@breakpoints {
+    phone: 480;
+    desktop: 1024px;
+}
+@media-queries {
+    tablet: <=desktop >phone, print;
+}
+@media all >desktop, tablet, handheld {
+    .header {
+        color: red;
+    }
+}
