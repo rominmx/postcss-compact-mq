@@ -133,6 +133,10 @@ describe('postcss-compact-mq', function() {
 
 		it('alias at-rule', function(done) {
 			test('alias', {}, done);
+		});
+
+		it('or operator', function(done) {
+			test('or', { type: 'all' }, done);
 		})
 	});
 });

@@ -1,0 +1,5 @@
+@media all and (max-width: 1024px) and (min-width: 769px), handheld and (max-width: 479px) {
+    .header {
+        color: red;
+    }
+}

@@ -1,4 +1,4 @@
-@media <=1024px >768 {
+@media print, <=1024px >768 {
 	.header {
 		color: red;
 	}

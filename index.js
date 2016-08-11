@@ -35,6 +35,7 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
 
         css.walkAtRules('media', function(atRule) {
             var params = atRule.params;
+            var mqComponents;
 
             // search and remove media query aliases
             // TODO: merge media queries
@@ -50,7 +51,12 @@ module.exports = postcss.plugin('postcss-compact-mq', function(opts) {
                     var pattern = new RegExp('([<=>])' + breakpoint.prop + '\\b');
                     params = params.replace(pattern, '$1' + breakpoint.value);
                 });
-                atRule.params = parseMediaQuery(params, defaultType).toString();
+
+                mqComponents = postcss.list.comma(params).map(function(component) {
+                    return parseMediaQuery(component, defaultType).toString();
+                });
+
+                atRule.params = mqComponents.join(', ');
             }
 
         });

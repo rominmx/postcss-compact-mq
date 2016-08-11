@@ -1,4 +1,4 @@
-@media all and (max-width: 1024px) and (min-width: 769px) {
+@media print, all and (max-width: 1024px) and (min-width: 769px) {
 	.header {
 		color: red;
 	}
