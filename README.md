@@ -32,7 +32,7 @@ You can omit units: the plugin automatically converts unitless values into pixel
 If media type is omitted, it will be resolved as `screen`. You can change default media type value via options.
 
 #### OR operator
-Important note: unlike previous version of this plugin, commas now represent 'OR' operator, not 'AND', which is closer to the [standard](https://www.w3.org/TR/css3-mediaqueries/) and lets you write more flexible constructions.
+**Important note**: unlike previous version of this plugin, commas now represent 'OR' operator, not 'AND', which is closer to the [standard](https://www.w3.org/TR/css3-mediaqueries/) and lets you write more flexible constructions.
 ```css
 // input.css
 @media print, >1024px, all <=768 {/*...*/}
@@ -55,7 +55,7 @@ In expressions like `h<=1024` or `h>768` height media feature will be resolved a
 @media all and (min-height: 769px) {/*...*/}
 ```
 
-Expressions like `<1024` and `w<1024` are identical.
+Expressions like `<=1024` and `w<=1024` are identical.
 
 ### Breakpoints
 You can create at-rule with aliases for breakpoints, for example:
