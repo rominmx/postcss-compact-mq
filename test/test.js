@@ -4,7 +4,9 @@ var expect = require('chai').expect,
 	path = require('path'),
 	plugin = require('../'),
 	MQValue = require('../lib/mediaqueries').MQValue,
-	parseMQ = require('../lib/mediaqueries').parseMQ;
+	parseMQ = require('../lib/mediaqueries').parseMQ,
+	MediaFeature = require('../lib/mediaqueries').MediaFeature,
+	parseMediaFeature = require('../lib/mediaqueries').parseMediaFeature;
 
 var test = function(fixture, opts, done) {
 	var input = fixture + '.css',
@@ -43,7 +45,6 @@ describe('postcss-compact-mq', function() {
 			it('reads unitless values', function() {
 				mediaqueries.forEach(function(mediaquery) {
 					var units = parseMQ(mediaquery.input, 'units');
-
 					expect(units).to.equal('px');
 				});
 			});
@@ -54,7 +55,6 @@ describe('postcss-compact-mq', function() {
 
 					for (var c in mediaquery.components) {
 						component = parseMQ(mediaquery.input, c);
-
 						expect(component).to.equal(mediaquery.components[c]);
 					}
 				});
