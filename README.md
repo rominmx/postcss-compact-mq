@@ -58,7 +58,7 @@ In expressions like `h<=1024` or `h>768` height media feature will be resolved a
 Expressions like `<=1024` and `w<=1024` are identical.
 
 ### Breakpoints
-You can create at-rule with aliases for breakpoints, for example:
+You can create an at-rule containing aliases for any breakpoints, for example:
 
 ```css
 @breakpoints {
@@ -72,7 +72,7 @@ You can create at-rule with aliases for breakpoints, for example:
 ```
 
 ### Aliases
-Just place aliases for your media queries in separate at-rule and use them somewhere:
+You can place the alias for a whole media query in a separate at-rule:
 ```css
 @breakpoints {
 	desktop: 1024;
@@ -84,6 +84,7 @@ Just place aliases for your media queries in separate at-rule and use them somew
 }
 ```
 
+...and use it somewhere in your stylesheets:
 ```css
 @media tablet {...}
 ```
@@ -100,7 +101,7 @@ You can combine aliases with any other legit expressions. E.g.:
 ```
 
 ### Options
-`type`: media type using when media type in expression is omitted. Default value: `screen`.
+`type`: media type which is used when media type in expression is omitted. Default value: `screen`.
 
 ## Inspiration
 This plugin was inspired by awesome Sass library [include-media](http://include-media.com) by Eduardo Bouças and Hugo Giraudel.
